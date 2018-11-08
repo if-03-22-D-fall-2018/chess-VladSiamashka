@@ -46,21 +46,27 @@ bool is_square_occupied(ChessBoard board, int file, int rank)
     return square->is_occupied;
   }
 
-   return false;
+   return true;
 }
 bool add_piece(ChessBoard board, int file, int rank, struct ChessPiece piece)
 {
-   if(rank >=1 && rank <= 8 && file >= 'a' && file <='h' && board[file -1][rank -97].is_occupied)
-   {
-       board[file -1][rank -97].piece = piece;
-       board[file -1][rank -97].is_occupied = true;
-       return true;
-   }
-   return false;
+  if (is_square_occupied(board, file, rank)) {
+    return false;
+  }
+  board[rank-1][file-'a'].piece = piece;
+  board[rank-1][file-'a'].is_occupied = true;
+  return true;
+
 }
+
 ChessPiece get_piece(ChessBoard board, int file, int rank)
 {
-  return board[file -1][rank -97].piece;
+  struct ChessSquare* s =get_square(board, file, rank);
+  if (s==0) {
+    ChessPiece p = {White, NoPiece};
+    return p;
+  }
+  return s-> piece;
 }
 void setup_chess_board(ChessBoard board)
 {
@@ -102,7 +108,7 @@ bool remove_piece(ChessBoard board, int file,int rank)
 {
     if(is_square_occupied(board,file,rank))
     {
-        board[file-1][rank-97].is_occupied = false;
+        board[rank-1][file-'a'].is_occupied = false;
         return true;
     }
     return false  ;
