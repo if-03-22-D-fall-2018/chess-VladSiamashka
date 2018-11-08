@@ -11,10 +11,10 @@
  * ----------------------------------------------------------
  */
  #include <stdbool.h>
-  #ifndef ___CHESS_H
+ #ifndef ___CHESS_H
  #define ___CHESS_H
-enum Color{White,Black};
-enum PieceType{
+ enum Color{White,Black};
+ enum PieceType{
    Pawn, Knight,Rook,Bishop,Queen,King, NoPiece
  };
  enum Move{
