@@ -35,7 +35,7 @@ ChessSquare* get_square(ChessBoard board, int file, int rank)
 {
    if(rank >=1 && rank <= 8 && file >= 'a' && file <='h')
    {
-       return &board[file -1][rank -97];
+       return &board[rank-1][file-'a'];
    }
    return 0;
 }
@@ -85,25 +85,23 @@ for(int file = 'a'; file <= 'h'; file++)
  add_piece(board,'d',1,white_queen);
  add_piece(board,'e',1,white_king);
  add_piece(board,'f',1,white_bishop);
-add_piece(board,'g',1,white_knight);
-add_piece(board,'h',1,white_rook);
-add_piece(board,'a',7,black_rook);
-add_piece(board,'b',7,black_knight);
-add_piece(board,'c',7,black_bishop);
-add_piece(board,'d',7,black_queen);
-add_piece(board,'e',7,black_king);
-add_piece(board,'f',7,black_bishop);
-add_piece(board,'g',7,black_knight);
-add_piece(board,'h',7,black_rook);
+ add_piece(board,'g',1,white_knight);
+ add_piece(board,'h',1,white_rook);
+ add_piece(board,'a',7,black_rook);
+ add_piece(board,'c',7,black_bishop);
+ add_piece(board,'d',7,black_queen);
+ add_piece(board,'e',7,black_king);
+ add_piece(board,'g',7,black_knight);
+ add_piece(board,'h',7,black_rook);
 }
 bool remove_piece(ChessBoard board, int file,int rank)
 {
     if(is_square_occupied(board,file,rank))
     {
         board[file-1][rank-97].is_occupied = false;
-        return false;
+        return true;
     }
-    return true;
+    return false  ;
 }
 
 bool squares_share_file(int file, int rank, int file2, int rank2)
@@ -137,6 +135,7 @@ bool squares_share_knights_move(int file, int rank, int file2, int rank2)
 }
 bool squares_share_pawns_move(Color color,Move move,int file, int rank, int file2, int rank2)
 {
+
 return false;
 }
 bool squares_share_queens_move(int file, int rank, int file2, int rank2)
