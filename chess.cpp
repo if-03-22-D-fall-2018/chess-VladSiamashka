@@ -10,7 +10,7 @@
  * Implementation of basic chess functions.
  * ----------------------------------------------------------
  */
- #include "shortcut.h"
+#include "shortcut.h"
 #include "test_chess.h"
 #include "chess.h"
 
