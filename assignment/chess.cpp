@@ -41,8 +41,12 @@ ChessSquare* get_square(ChessBoard board, int file, int rank)
 }
 bool is_square_occupied(ChessBoard board, int file, int rank)
 {
+  struct ChessSquare* square =get_square(board, file ,rank);
+  if (square!=0) {
+    return square->is_occupied;
+  }
 
-   return board[file -1][rank -97].is_occupied;
+   return false;
 }
 bool add_piece(ChessBoard board, int file, int rank, struct ChessPiece piece)
 {
