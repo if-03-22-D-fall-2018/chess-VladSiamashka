@@ -10,7 +10,8 @@
  * Implementation of basic chess functions.
  * ----------------------------------------------------------
  */
- #include "shortcut.h"
+#include  <stdlib.h>
+#include "shortcut.h"
 #include "test_chess.h"
 #include "chess.h"
 
@@ -70,6 +71,7 @@ ChessPiece get_piece(ChessBoard board, int file, int rank)
 }
 void setup_chess_board(ChessBoard board)
 {
+  init_chess_board(board);
  struct ChessPiece white_pawn = {White, Pawn};
  struct ChessPiece white_rook = {White, Rook};
  struct ChessPiece white_knight = {White, Knight};
@@ -135,27 +137,94 @@ bool squares_share_rank(int file, int rank, int file2, int rank2)
 }
 bool squares_share_diagonal(int file, int rank, int file2, int rank2)
 {
-   if(rank >=1 && rank <= 8 && file >= 'a' && file <='h' && (file - file2) == (rank -rank2))
-   {
-       return true;
-   }
-   return false;
+  if(rank >=1 && rank <= 8 && file >= 'a' && file <='h' && rank2 >=1 && rank2 <= 8 && file2 >= 'a' && file2 <='h' &&
+      abs(file - file2) == abs(rank -rank2))
+    {
+        return true;
+    }
+return false;
 }
 
 bool squares_share_knights_move(int file, int rank, int file2, int rank2)
 {
+  if (rank >=1 && rank <= 8 && file >= 'a' && file <='h' && rank2 >=1 && rank2 <= 8 && file2 >= 'a' && file2 <='h')
+    {
+      if (abs(rank - rank2) == 1 && abs(file - file2) == 2) {
+        return true;
+      }
+      else if ( abs(rank -rank2) ==2 && abs(file-file2) == 1 ) {
+        return true;
+      }
+    }
  return false;
 }
 bool squares_share_pawns_move(Color color,Move move,int file, int rank, int file2, int rank2)
 {
-
-return false;
+  if (move == CaptureMove)
+     {
+       if (color == Black)
+       {
+         return (file2 == file+1 && rank2 == rank-1) || (file2 == file-1 && rank2 == rank-1);
+       }
+       else
+       {
+         return (file2 == file-1 && rank2 == rank+1) || (file2 == file+1 && rank2 == rank+1);
+       }
+     }
+     if (move == NormalMove)
+     {
+       if (rank == 1 || rank == 8)
+       {
+         return false;
+       }
+       if (color == Black && rank == 7)
+       {
+         return ((rank2 == rank-2 && file2 == file) || (rank2 == rank-1 && file2 == file));
+       }
+       else if (color == White && rank == 2)
+       {
+         return ((rank2 == rank+2 && file2 == file) || (rank2 == rank+1 && file2 == file));
+       }
+       if (color == Black && rank >= 4)
+       {
+         return (rank2 == rank-1 && file2 == file);
+       }
+       else if (color == White && rank <= 4)
+       {
+         return (rank2 == rank+1 && file2 == file);
+       }
+     }
+     return false;
 }
 bool squares_share_queens_move(int file, int rank, int file2, int rank2)
 {
-return false;
+  if (rank >=1 && rank <= 8 && file >= 'a' && file <='h' && rank2 >=1 && rank2 <= 8 && file2 >= 'a' && file2 <='h')
+     {
+       if (squares_share_diagonal(file,rank,file2,rank2)) {
+         return true;
+       }
+       else if (squares_share_file(file,rank,file2,rank2)) {
+         return true;
+       }
+       else if ( squares_share_rank(file,rank,file2,rank2)) {
+         return true;
+       }
+     }
+  return false;
 }
 bool squares_share_kings_move(int file, int rank, int file2, int rank2)
 {
-return false;
+  if (rank >=1 && rank <= 8 && file >= 'a' && file <='h' && rank2 >=1 && rank2 <= 8 && file2 >= 'a' && file2 <='h')
+     {
+       if (abs(file-file2) == 1 && abs(rank-rank2) == 0) {
+           return true;
+       }
+       else if (abs(file-file2) == 0 && abs(rank-rank2) == 1) {
+         return true;
+       }
+       else if (abs(file -file2) == 1 && abs(rank - rank2) == 1) {
+         return true;
+       }
+     }
+  return false;
 }
